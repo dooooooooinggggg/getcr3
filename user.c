@@ -14,7 +14,7 @@
 
 int main(int argc, char **argv)
 {
-	char buf[8];
+	// char buf[8];
 	uint64_t res[5];
 	uint64_t cr0, cr2, cr3, cr4;
 	int fd;
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 		rc = read(fd, res, 40);
 		for (int i = 0; i < 5; i++)
 		{
-			if (i = 1)
+			if (i == 1)
 				continue;
 			printf("CR%d: 0x%" PRIx64 "\n", i, res[i]);
 		}
