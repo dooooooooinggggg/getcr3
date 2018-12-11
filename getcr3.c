@@ -41,7 +41,8 @@ static ssize_t getcr3_read(struct file *filp, char __user *buf,
 						   size_t count, loff_t *ppos)
 {
 #ifdef __x86_64__
-	u64 cr0, cr2, cr3, cr4;
+	uint64_t cr0, cr2, cr3, cr4;
+	uint64_t cr[5];
 	__asm__ __volatile__(
 		"mov %%cr0, %%rax\n\t"
 		"mov %%rax, %0\n\t"
@@ -51,15 +52,16 @@ static ssize_t getcr3_read(struct file *filp, char __user *buf,
 		"mov %%rax, %2\n\t"
 		"mov %%cr4, %%rax\n\t"
 		"mov %%rax, %3\n\t"
-		: "=m"(cr0), "=m"(cr2), "=m"(cr3), "=m"(cr4)
+		: "=m"(cr[0]), "=m"(cr[2]), "=m"(cr[3]), "=m"(cr[4])
 		: /* no input */
 		: "%rax");
-	if (copy_to_user(buf, (unsigned char *)&cr3, sizeof(u64)))
+	if (copy_to_user(buf, cr, 40))
 	{
 		printk(KERN_INFO "copy_to_user failed\n");
 		return -EFAULT;
 	}
-	return sizeof(u64);
+	return 40;
+
 #elif defined(__i386__)
 	u32 cr0, cr2, cr3;
 	__asm__ __volatile__(
