@@ -55,12 +55,12 @@ static ssize_t getcr3_read(struct file *filp, char __user *buf,
 		: "=m"(cr[0]), "=m"(cr[2]), "=m"(cr[3]), "=m"(cr[4])
 		: /* no input */
 		: "%rax");
-	if (copy_to_user(buf, (unsigned char *)cr, 40))
+	if (copy_to_user(buf, (unsigned char *)cr, sizeof(u64) * 5))
 	{
 		printk(KERN_INFO "copy_to_user failed\n");
 		return -EFAULT;
 	}
-	return 40;
+	return sizeof(u64) * 5;
 
 #elif defined(__i386__)
 	u32 cr0, cr2, cr3;
