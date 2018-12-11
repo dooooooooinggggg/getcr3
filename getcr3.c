@@ -41,7 +41,7 @@ static ssize_t getcr3_read(struct file *filp, char __user *buf,
 						   size_t count, loff_t *ppos)
 {
 #ifdef __x86_64__
-	u64 cr0, cr2, cr3;
+	u64 cr0, cr1, cr2, cr3, cr4;
 	__asm__ __volatile__(
 		"mov %%cr0, %%rax\n\t"
 		"mov %%rax, %0\n\t"
