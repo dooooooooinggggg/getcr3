@@ -45,11 +45,15 @@ static ssize_t getcr3_read(struct file *filp, char __user *buf,
 	__asm__ __volatile__(
 		"mov %%cr0, %%rax\n\t"
 		"mov %%rax, %0\n\t"
-		"mov %%cr2, %%rax\n\t"
+		"mov %%cr1, %%rax\n\t"
 		"mov %%rax, %1\n\t"
-		"mov %%cr3, %%rax\n\t"
+		"mov %%cr2, %%rax\n\t"
 		"mov %%rax, %2\n\t"
-		: "=m"(cr0), "=m"(cr2), "=m"(cr3)
+		"mov %%cr3, %%rax\n\t"
+		"mov %%rax, %3\n\t"
+		"mov %%cr4, %%rax\n\t"
+		"mov %%rax, %4\n\t"
+		: "=m"(cr0), "=m"(cr1), "=m"(cr2), "=m"(cr3), "=m"(cr4)
 		: /* no input */
 		: "%rax");
 	if (copy_to_user(buf, (unsigned char *)&cr3, sizeof(u64)))

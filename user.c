@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 	}
 	while (1)
 	{
-		rc = read(fd, &cr3, 8); // cr3という変数に，8Byte読み込む
+		rc = read(fd, &cr3, 8);
 		printf("return code(length)=%d  CR3=0x%" PRIx64 "\n", rc, cr3);
 		sleep(1);
 	}
