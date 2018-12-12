@@ -31,6 +31,8 @@
 #define __devexit_p
 #endif
 
+#define CR_NUMBER 5
+
 static int getcr3_open(struct inode *inode, struct file *filp)
 {
 	printk("%s\n", __func__);
@@ -41,8 +43,7 @@ static ssize_t getcr3_read(struct file *filp, char __user *buf,
 						   size_t count, loff_t *ppos)
 {
 #ifdef __x86_64__
-	// uint64_t cr0, cr2, cr3, cr4;
-	u64 cr[5];
+	u64 cr[CR_NUMBER];
 	__asm__ __volatile__(
 		"mov %%cr0, %%rax\n\t"
 		"mov %%rax, %0\n\t"
@@ -55,15 +56,15 @@ static ssize_t getcr3_read(struct file *filp, char __user *buf,
 		: "=m"(cr[0]), "=m"(cr[2]), "=m"(cr[3]), "=m"(cr[4])
 		: /* no input */
 		: "%rax");
-	if (copy_to_user(buf, (unsigned char *)cr, sizeof(u64) * 5))
+	if (copy_to_user(buf, (unsigned char *)cr, sizeof(u64) * CR_NUMBER))
 	{
 		printk(KERN_INFO "copy_to_user failed\n");
 		return -EFAULT;
 	}
-	return sizeof(u64) * 5;
+	return sizeof(u64) * CR_NUMBER;
 
 #elif defined(__i386__)
-	u32 cr0, cr2, cr3;
+	u32 cr[CR_NUMBER];
 	__asm__ __volatile__(
 		"mov %%cr0, %%eax\n\t"
 		"mov %%eax, %0\n\t"
@@ -71,15 +72,17 @@ static ssize_t getcr3_read(struct file *filp, char __user *buf,
 		"mov %%eax, %1\n\t"
 		"mov %%cr3, %%eax\n\t"
 		"mov %%eax, %2\n\t"
-		: "=m"(cr0), "=m"(cr2), "=m"(cr3)
+		"mov %%cr4, %%eax\n\t"
+		"mov %%eax, %3\n\t"
+		: "=m"(cr[0]), "=m"(cr[2]), "=m"(cr[3]), "-m"(cr[4])
 		: /* no input */
 		: "%eax");
-	if (copy_to_user(buf, (unsigned char *)&cr3, sizeof(u32)))
+	if (copy_to_user(buf, (unsigned char *)cr, sizeof(u32) * CR_NUMBER))
 	{
 		printk(KERN_INFO "copy_to_user failed\n");
 		return -EFAULT;
 	}
-	return sizeof(u32);
+	return sizeof(u32) * CR_NUMBER;
 #endif
 }
 

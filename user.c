@@ -12,9 +12,12 @@
 #define MEM_DEVICE "/dev/getcr3"
 #define BUF_SIZE (256)
 
+#define CR_NUMBER 5
+
 int main(int argc, char **argv)
 {
-	uint64_t cr[5];
+	// Only 64bit
+	uint64_t cr[CR_NUMBER];
 	int fd, rc;
 	if ((fd = open(MEM_DEVICE, O_RDONLY)) < 0)
 	{
@@ -24,8 +27,9 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		rc = read(fd, cr, 40);
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < CR_NUMBER; i++)
 		{
+			// cr1 cannot see
 			if (i == 1)
 				continue;
 			printf("CR%d: 0x%" PRIx64 "\n", i, cr[i]);
