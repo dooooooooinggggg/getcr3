@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		printf("a:%d at 0x%p\n", a, &a);
+		printf("a:%d at %p\n", a, &a);
 		rc = read(fd, cr, 40);
 		for (int i = 0; i < CR_NUMBER; i++)
 		{
