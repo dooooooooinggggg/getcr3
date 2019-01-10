@@ -24,8 +24,12 @@ int main(int argc, char **argv)
 		fprintf(stderr, "cannot open %s\n", MEM_DEVICE);
 		return 1;
 	}
+
+	int a = 456;
+
 	while (1)
 	{
+		printf("a:%d at 0x%p\n", a, &a);
 		rc = read(fd, cr, 40);
 		for (int i = 0; i < CR_NUMBER; i++)
 		{
