@@ -14,6 +14,16 @@
 
 #define CR_NUMBER 5
 
+void printIndex(uint64_t aVirtAddr)
+{
+	int offset = aVirtAddr & 4095;
+	int pml4Index = (aVirtAddr >> 12) & 511;
+	int pdpIndex = (aVirtAddr >> 21) & 511;
+	int pdIndex = (aVirtAddr >> 30) & 511;
+	int ptIndex = (aVirtAddr >> 39) & 511;
+	printf("%d %d %d %d %d\n", ptIndex, pdIndex, pdpIndex, pml4Index, offset);
+}
+
 int main(int argc, char **argv)
 {
 	// Only 64bit
@@ -26,10 +36,12 @@ int main(int argc, char **argv)
 	}
 
 	int a = 456;
+	uint64_t aVirtAddr = &a;
 
 	while (1)
 	{
 		printf("a:%d at %p\n", a, &a);
+		printIndex(aVirtAddr);
 		rc = read(fd, cr, 40);
 		for (int i = 0; i < CR_NUMBER; i++)
 		{
