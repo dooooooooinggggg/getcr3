@@ -16,11 +16,11 @@
 
 void printIndex(uint64_t aVirtAddr)
 {
-	uint64_t offset = aVirtAddr & 4095;
 	uint64_t pml4Index = (aVirtAddr >> 39) & 511;
 	uint64_t pdpIndex = (aVirtAddr >> 30) & 511;
 	uint64_t pdIndex = (aVirtAddr >> 21) & 511;
 	uint64_t ptIndex = (aVirtAddr >> 12) & 511;
+	uint64_t offset = aVirtAddr & 4095;
 	printf("%d %d %d %d %d\n", pml4Index, pdpIndex, pdIndex, ptIndex, offset);
 	// printf("arg:0x%" PRIx64 "\n", aVirtAddr);
 	// uint64_t res = calcVirtAddrFromOffset(pml4Index, pdpIndex, pdIndex, ptIndex);
