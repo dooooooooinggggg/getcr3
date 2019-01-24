@@ -39,12 +39,11 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	// int a = 456;
-	time_t a = time(NULL); // UNIX TIME
-	uint64_t aVirtAddr = &a;
-
 	while (1)
 	{
+		time_t a = time(NULL); // UNIX TIME
+		uint64_t aVirtAddr = &a;
+
 		printf("a:%ld at %p\n", a, &a);
 		printIndex(aVirtAddr);
 		rc = read(fd, cr, 40);
