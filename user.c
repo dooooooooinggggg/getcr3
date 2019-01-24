@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 		time_t a = time(NULL); // UNIX TIME
 		uint64_t aVirtAddr = &a;
 
-		printf("a:%ld at %p\n", a, &a);
+		printf("a:%ld(0x%lx) at %p\n", a, a, &a);
 		printIndex(aVirtAddr);
 		rc = read(fd, cr, 40);
 		for (int i = 0; i < CR_NUMBER; i++)
