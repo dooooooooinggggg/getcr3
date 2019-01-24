@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <inttypes.h>
+#include <time.h>
 //#define DEBUG
 
 #define MEM_DEVICE "/dev/getcr3"
@@ -38,12 +39,13 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	int a = 456;
+	// int a = 456;
+	time_t a = time(NULL); // UNIX TIME
 	uint64_t aVirtAddr = &a;
 
 	while (1)
 	{
-		printf("a:%d at %p\n", a, &a);
+		printf("a:%ld at %p\n", a, &a);
 		printIndex(aVirtAddr);
 		rc = read(fd, cr, 40);
 		for (int i = 0; i < CR_NUMBER; i++)
